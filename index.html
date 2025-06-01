@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="box">
+        <div class="search">
+            <input type="text" placeholder="Enter City name" spellcheck="true">
+            <button><img src="images/search.png" alt=""></button>
+        </div>
+        <div class="error">
+            <p>invlaid city name</p>
+        </div>
+        <div class="first-div">
+            <div class="rain">
+                <img src="images/rain.png" class="weather-icon">
+                <h1 class="tempp">22°C</h1>
+                <h2 class="city">New York</h2>
+            </div>
+            <div class="second-div">
+                <div class="humidity">
+                    <img src="images/humidity.png" alt="">
+                    <div class="para">
+                        <p class="humi">50%</p>
+                        <p>Humidity</p>
+                    </div>
+
+                </div>
+                <div class="wind">
+                    <img src="images/wind.png" alt="">
+                    <div class="para">
+                        <p class="paragraph">15km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        const apiKey = "971576ac1827212b124427965f855847";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const searchBox = document.querySelector(".search input");
+        const searchbtn = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon")
+
+
+        async function checkWeather(city) {
+            const res = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+            if (res.status == 404) {
+                document.querySelector(".error").style.display = "block";
+                document.querySelector(".first-div").style.display = "none";
+            }
+            else {
+                
+                var data = await res.json();
+
+                console.log(data);
+
+                document.querySelector(".city").innerText = data.name;
+                document.querySelector(".tempp").innerText = Math.round(data.main.temp) + '°C';
+                document.querySelector(".humi").innerText = data.main.humidity + '%';
+                document.querySelector(".paragraph").innerText = data.wind.speed + 'km/h';
+
+                if (data.weather[0].main == "Clouds") {
+                    weatherIcon.src = "images/clouds.png"
+                }
+                else if (data.weather[0].main == "Clean") {
+                    weatherIcon.src = "images/clouds.png"
+                }
+                else if (data.weather[0].main == "Rain") {
+                    weatherIcon.src = "images/clouds.png"
+                }
+                else if (data.weather[0].main == "Drizzle") {
+                    weatherIcon.src = "images/clouds.png"
+                }
+                else if (data.weather[0].main == "Mist") {
+                    weatherIcon.src = "images/clouds.png"
+                }
+
+                document.querySelector(".first-div").style.display = "block";
+                document.querySelector(".error").style.display = "none";
+            }
+
+        }
+
+        searchbtn.addEventListener("click", () => {
+            checkWeather(searchBox.value);
+        });
+
+
+    </script>
+</body>
+
+</html>
